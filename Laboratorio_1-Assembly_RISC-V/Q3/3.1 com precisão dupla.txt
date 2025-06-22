@@ -1,0 +1,81 @@
+.data
+a: .double 1
+b: .double -2468
+c: .double 33762440
+
+double_zero: .double 0.0
+quatro: .double 4.0
+
+.text
+MAIN:
+	# Coef. a
+	la t0, a 
+	fld fa1, 0(t0)     # fa1 = a
+	# Coef. b
+	la t0, b
+	fld fa2, 0(t0)     # fa2 = b
+	# Coef. c
+	la t0, c
+	fld fa3, 0(t0)     # fa3 = c
+	# fa0 = zero
+	la t0, double_zero
+	fld fa0, 0(t0)
+VERIFICACAO:
+	feq.d t0, fa0, fa1 # t0 = (fa1 == 0)
+	bne t0, zero, ERRO
+	
+DELTA:
+	fmul.d ft0, fa2, fa2       # ft0 = b^2
+	la t0, quatro 
+	fld ft1, 0(t0)             # ft1 = 4
+	fmul.d ft1, ft1, fa1       # ft1 = 4a
+	fmul.d ft1, ft1, fa3       # ft1 = 4a*c
+	fsub.d ft0, ft0, ft1       # ft0 = b^2 - 4ac
+
+VERIFICA_RAIZ:
+	flt.d t0, ft0, fa0         # t0 = (delta < 0)
+	beq t0, zero, RAIZ_REAL
+	
+RAIZ_COMPLEXA:
+	li a0, 2
+	li a7, 1
+	ecall
+	fneg.d ft0, ft0            # delta = -delta
+	fsqrt.d ft0, ft0           # ft0 = sqrt(delta)
+	fneg.d ft1, fa2            # -b
+	fadd.d ft2, fa1, fa1       # ft2 = 2a
+	fdiv.d ft3, ft1, ft2       # parte real = -b/2a
+	fdiv.d ft4, ft0, ft2       # parte imag = sqrt(delta)/2a
+	addi sp, sp, -16
+	fsd ft3, 0(sp)
+	fsd ft4, 8(sp)
+	j FIM
+				
+RAIZ_REAL:
+	li a0, 1
+	li a7, 1
+	ecall
+	fsqrt.d ft0, ft0
+	fneg.d ft1, fa2
+	fadd.d ft2, fa1, fa1       # ft2 = 2a
+	# raiz1 = (-b + sqrt(delta)) / 2a
+	fadd.d ft3, ft1, ft0
+	fdiv.d ft3, ft3, ft2
+	# raiz2 = (-b - sqrt(delta)) / 2a
+	fsub.d ft4, ft1, ft0
+	fdiv.d ft4, ft4, ft2
+	addi sp, sp, -16
+	fsd ft3, 0(sp)
+	fsd ft4, 8(sp)
+	j FIM
+
+ERRO:
+	li a0, 0
+	li a7, 1
+	ecall
+	j FIM
+	
+FIM:	
+	li a7,10
+	ecall
+

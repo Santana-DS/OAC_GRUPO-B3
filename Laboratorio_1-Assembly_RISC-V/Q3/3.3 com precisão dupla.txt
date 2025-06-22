@@ -1,0 +1,157 @@
+.data
+mensagemDeErro: .asciz "\nErro! Não é uma equação de segundo grau.\n"
+sinalDeMenos: .asciz " - "
+sinalDeMais: .asciz " + "
+numComplexo: .asciz " i"
+novaLinha: .ascii "\n"
+doubleZero: .double 0.0
+contador: .word 5 # Digite o numero de equações que deseja inserir
+msgInput: .asciz "Digite uma equação do segundo grau, primeiro o A, depois o B e por último C.\n"
+quatro: .double 4.0
+raiz1: .asciz "R(1) = "
+raiz2: .asciz "R(2) = "
+
+.text
+main:
+    la t0, contador
+    lw s0, 0(t0)
+    add s1, zero, zero
+    # 0) Crio uma flag que vai armazenar o zero
+    la t0, doubleZero
+    fld fa4, 0(t0)  # Load double
+for:
+    beq s0, s1, fimDefinitivo
+    jal mensagemDeInicializacao
+    # 1) Recebo a
+    li a7, 7         # System call for reading double
+    ecall
+    fmv.d fa1, fa0   # fa1 = a (double)
+    # 2) Recebo b
+    li a7, 7
+    ecall
+    fmv.d fa2, fa0   # fa2 = b (double)
+    # 3) Recebo c
+    li a7, 7
+    ecall
+    fmv.d fa3, fa0   # fa3 = c (double)
+
+verificaEquacao:    
+    feq.d t0, fa1, fa4  # Double comparison
+    bne t0, zero, erroShow
+    
+delta:
+    fmul.d ft0, fa2, fa2 # ft0 = b^2 (double)
+    la t0, quatro
+    fld ft1, 0(t0)       # Load double 4.0
+    fmul.d ft1, ft1, fa1 # ft1 = 4*a (double)
+    fmul.d ft1, ft1, fa3 # ft1 = 4*a*c (double)
+    fsub.d ft0, ft0, ft1 # ft0 = b^2 - 4*a*c (double)
+    
+verificaRaizes:
+    flt.d t0, ft0, fa4   # ft0 (delta) < fa4 (zero), t0 = 1; t0 = 0 (double)
+    beq t0, zero, raizesReais
+    
+raizesComplexas:
+    fneg.d ft0, ft0      # Negate double
+    fsqrt.d ft0, ft0     # ft0 = raiz de delta (double)
+    fneg.d ft1, fa2      # ft1 = -b (double)
+    fadd.d ft2, fa1, fa1 # ft2 = 2a (double)
+    fdiv.d ft3, ft1, ft2 # ft3 = -b/2a (double)
+    fdiv.d ft4, ft0, ft2 # ft4 = raiz de delta/2a (double)
+    addi sp, sp, -16     # Reserve space for two doubles (8 bytes each)
+    fsd ft4, 0(sp)       # Store double (parte imaginária)
+    fsd ft3, 8(sp)       # Store double (parte real)
+
+raizComplexaShow:
+    la a0, raiz1
+    li a7, 4
+    ecall
+    fld fa0, 8(sp)       # Load double (parte real)
+    li a7, 3             # System call for printing double
+    ecall
+    la a0, sinalDeMais
+    li a7, 4
+    ecall
+    fld fa0, 0(sp)       # Load double (parte imaginária)
+    li a7, 3
+    ecall
+    la a0, numComplexo
+    li a7, 4
+    ecall
+    la a0, novaLinha
+    li a7, 4
+    ecall
+    add a0, zero, zero
+    la a0, raiz2
+    li a7, 4
+    ecall
+    fld fa0, 8(sp)       # Load double (parte real)
+    li a7, 3
+    ecall
+    la a0, sinalDeMenos
+    li a7, 4
+    ecall
+    fld fa0, 0(sp)       # Load double (parte imaginária)
+    li a7, 3
+    ecall
+    la a0, numComplexo
+    li a7, 4
+    ecall
+    la a0, novaLinha
+    li a7, 4
+    ecall
+    j fimIntermediario
+    
+raizesReais:
+    fsqrt.d ft0, ft0     # ft0 = raiz de delta (double)
+    fneg.d ft1, fa2      # ft1 = -b (double)
+    fadd.d ft2, fa1, fa1 # ft2 = 2a (double)
+    fadd.d ft3, ft1, ft0
+    fdiv.d ft3, ft3, ft2 # ft3 = (-b + raiz de delta)/2a (double)
+    fsub.d ft4, ft1, ft0
+    fdiv.d ft4, ft4, ft2 # ft4 = (-b - raiz de delta)/2a (double)
+    addi sp, sp, -16     # Reserve space for two doubles
+    fsd ft4, 0(sp)       # Store double
+    fsd ft3, 8(sp)       # Store double
+    
+raizRealShow:
+    la a0, raiz1
+    li a7, 4
+    ecall
+    fld fa0, 8(sp)       # Load double (primeira raiz)
+    li a7, 3
+    ecall
+    la a0, novaLinha
+    li a7, 4
+    ecall
+    add a0, zero, zero
+    la a0, raiz2
+    li a7, 4
+    ecall
+    fld fa0, 0(sp)       # Load double (segunda raiz)
+    li a7, 3
+    ecall
+    la a0, novaLinha
+    li a7, 4
+    ecall
+            
+fimIntermediario:
+    addi s1, s1, 1
+    j for
+    
+fimDefinitivo:
+    addi sp, sp, 16      # Adjust stack pointer for doubles
+    li a7, 10
+    ecall
+    
+erroShow:
+    la a0, mensagemDeErro
+    li a7, 4
+    ecall
+    j fimIntermediario
+
+mensagemDeInicializacao:
+    la a0, msgInput
+    li a7, 4
+    ecall
+    ret

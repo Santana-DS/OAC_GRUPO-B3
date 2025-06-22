@@ -1,0 +1,136 @@
+.data
+a: .double 0
+b: .double 10
+c: .double  100
+
+mensagem_de_erro: .asciz "Erro! Não é uma equação de segundo grau.\n"
+sinal_de_menos: .asciz " - "
+sinal_de_mais: .asciz " + "
+num_complexo: .asciz " i"
+nova_linha: .ascii "\n"
+float_zero: .double 0
+raiz_1: .asciz "R(1) = "
+raiz_2: .asciz "R(2) = "
+quatro: .double 4
+
+.text
+main:
+	# Coef. a
+	la t0, a
+	fld fa1, 0(t0)
+	# Coef. b
+	la t0, b
+	fld fa2, 0(t0)
+	# Coef. c
+	la t0, c
+	fld fa3, 0(t0)
+	# fa0 = zero
+	la t0, float_zero
+	fld fa0, 0(t0)
+	
+verificoEquacao:
+	feq.d t0, fa0, fa1
+	bne t0, zero, erroShow
+	
+	# Delta: b^2 - 4ac
+delta:
+	fmul.d ft0, fa2, fa2       # ft0 = b^2
+	la t0, quatro 
+	fld ft1, 0(t0)
+	fmul.d ft1, ft1, fa1 
+	fmul.d ft1, ft1, fa3       # ft1 = 4*a*c
+	fsub.d ft0, ft0, ft1       # ft0 = b^2 - 4*a*c
+
+verificaRaiz:
+	flt.d t0, ft0, fa0         # delta < 0?
+	beq t0, zero, raizReal
+	
+raizComplexa:
+	fneg.d ft0, ft0
+	fsqrt.d ft0, ft0            # ft0 = sqrt(-delta)
+	fneg.d ft1, fa2            # ft1 = -b
+	fadd.d ft2, fa1, fa1       # ft2 = 2a
+	fdiv.d ft3, ft1, ft2       # parte real
+	fdiv.d ft4, ft0, ft2       # parte imaginária
+	addi sp, sp, -16
+	fsd ft3, 0(sp)
+	fsd ft4, 8(sp)
+	
+raizComplexaShow:
+	la a0, raiz_1
+	li a7, 4
+	ecall
+	fld fa0, 0(sp)
+	li a7, 3                   # print double
+	ecall
+	la a0, sinal_de_mais
+	li a7, 4
+	ecall
+	fld fa0, 8(sp)
+	li a7, 3
+	ecall
+	la a0, num_complexo
+	li a7, 4
+	ecall
+	la a0, nova_linha
+	li a7, 4
+	ecall
+	la a0, raiz_2
+	li a7, 4
+	ecall
+	fld fa0, 0(sp)
+	li a7, 3
+	ecall
+	la a0, sinal_de_menos
+	li a7, 4
+	ecall
+	fld fa0, 8(sp)
+	li a7, 3
+	ecall
+	la a0, num_complexo
+	li a7, 4
+	ecall
+	addi sp, sp, 16
+	j fim
+						
+raizReal:
+	fsqrt.d ft0, ft0
+	fneg.d ft1, fa2
+	fadd.d ft2, fa1, fa1
+	fadd.d ft3, ft1, ft0
+	fdiv.d ft3, ft3, ft2
+	fsub.d ft4, ft1, ft0
+	fdiv.d ft4, ft4, ft2
+	addi sp, sp, -16
+	fsd ft4, 0(sp)
+	fsd ft3, 8(sp)
+
+raizRealShow:
+	la a0, raiz_1
+	li a7, 4
+	ecall
+	fld fa0, 0(sp)
+	li a7, 3
+	ecall
+	la a0, nova_linha
+	li a7, 4
+	ecall
+	la a0, raiz_2
+	li a7, 4
+	ecall
+	fld fa0, 8(sp)
+	li a7, 3
+	ecall
+	addi sp, sp, 16
+	j fim
+
+erroShow:
+	la a0, mensagem_de_erro
+	li a7, 4
+	ecall
+	j fim
+	
+fim:	
+	li a7, 10
+	ecall
+
