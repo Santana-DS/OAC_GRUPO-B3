@@ -20,6 +20,9 @@ proc simTimestamp {} {
 after 2500 simTimestamp
 run -all
 quit -f
+
+
+
 </modelsim_script>
 <modelsim_script_timing>onerror {exit -code 1}
 vlib work
@@ -38,6 +41,9 @@ proc simTimestamp {} {
 after 2500 simTimestamp
 run -all
 quit -f
+
+
+
 </modelsim_script_timing>
 <hdl_lang>vhdl</hdl_lang>
 </simulation_settings>*/
@@ -1086,6 +1092,16 @@ SIGNAL("s_banco_regs[5][0]")
 	PARENT = "s_banco_regs[5]";
 }
 
+SIGNAL("pr_state")
+{
+	VALUE_TYPE = NINE_LEVEL_BIT;
+	SIGNAL_TYPE = SINGLE_BIT;
+	WIDTH = 1;
+	LSB_INDEX = -1;
+	DIRECTION = INPUT;
+	PARENT = "";
+}
+
 TRANSITION_LIST("CLOCK")
 {
 	NODE
@@ -1093,9 +1109,9 @@ TRANSITION_LIST("CLOCK")
 		REPEAT = 1;
 		NODE
 		{
-			REPEAT = 150;
-			LEVEL 0 FOR 10.0;
-			LEVEL 1 FOR 10.0;
+			REPEAT = 1000;
+			LEVEL 0 FOR 1.5;
+			LEVEL 1 FOR 1.5;
 		}
 	}
 }
@@ -1106,8 +1122,8 @@ TRANSITION_LIST("Reset")
 	{
 		REPEAT = 1;
 		LEVEL 0 FOR 10.0;
-		LEVEL 1 FOR 70.0;
-		LEVEL 0 FOR 2920.0;
+		LEVEL 1 FOR 30.0;
+		LEVEL 0 FOR 2960.0;
 	}
 }
 
@@ -1692,7 +1708,7 @@ TRANSITION_LIST("s_banco_regs[5][31]")
 	NODE
 	{
 		REPEAT = 1;
-		LEVEL U FOR 3000.0;
+		LEVEL X FOR 3000.0;
 	}
 }
 
@@ -1701,7 +1717,7 @@ TRANSITION_LIST("s_banco_regs[5][30]")
 	NODE
 	{
 		REPEAT = 1;
-		LEVEL U FOR 3000.0;
+		LEVEL X FOR 3000.0;
 	}
 }
 
@@ -1710,7 +1726,7 @@ TRANSITION_LIST("s_banco_regs[5][29]")
 	NODE
 	{
 		REPEAT = 1;
-		LEVEL U FOR 3000.0;
+		LEVEL X FOR 3000.0;
 	}
 }
 
@@ -1719,7 +1735,7 @@ TRANSITION_LIST("s_banco_regs[5][28]")
 	NODE
 	{
 		REPEAT = 1;
-		LEVEL U FOR 3000.0;
+		LEVEL X FOR 3000.0;
 	}
 }
 
@@ -1728,7 +1744,7 @@ TRANSITION_LIST("s_banco_regs[5][27]")
 	NODE
 	{
 		REPEAT = 1;
-		LEVEL U FOR 3000.0;
+		LEVEL X FOR 3000.0;
 	}
 }
 
@@ -1737,7 +1753,7 @@ TRANSITION_LIST("s_banco_regs[5][26]")
 	NODE
 	{
 		REPEAT = 1;
-		LEVEL U FOR 3000.0;
+		LEVEL X FOR 3000.0;
 	}
 }
 
@@ -1746,7 +1762,7 @@ TRANSITION_LIST("s_banco_regs[5][25]")
 	NODE
 	{
 		REPEAT = 1;
-		LEVEL U FOR 3000.0;
+		LEVEL X FOR 3000.0;
 	}
 }
 
@@ -1755,7 +1771,7 @@ TRANSITION_LIST("s_banco_regs[5][24]")
 	NODE
 	{
 		REPEAT = 1;
-		LEVEL U FOR 3000.0;
+		LEVEL X FOR 3000.0;
 	}
 }
 
@@ -1764,7 +1780,7 @@ TRANSITION_LIST("s_banco_regs[5][23]")
 	NODE
 	{
 		REPEAT = 1;
-		LEVEL U FOR 3000.0;
+		LEVEL X FOR 3000.0;
 	}
 }
 
@@ -1773,7 +1789,7 @@ TRANSITION_LIST("s_banco_regs[5][22]")
 	NODE
 	{
 		REPEAT = 1;
-		LEVEL U FOR 3000.0;
+		LEVEL X FOR 3000.0;
 	}
 }
 
@@ -1782,7 +1798,7 @@ TRANSITION_LIST("s_banco_regs[5][21]")
 	NODE
 	{
 		REPEAT = 1;
-		LEVEL U FOR 3000.0;
+		LEVEL X FOR 3000.0;
 	}
 }
 
@@ -1791,7 +1807,7 @@ TRANSITION_LIST("s_banco_regs[5][20]")
 	NODE
 	{
 		REPEAT = 1;
-		LEVEL U FOR 3000.0;
+		LEVEL X FOR 3000.0;
 	}
 }
 
@@ -1800,7 +1816,7 @@ TRANSITION_LIST("s_banco_regs[5][19]")
 	NODE
 	{
 		REPEAT = 1;
-		LEVEL U FOR 3000.0;
+		LEVEL X FOR 3000.0;
 	}
 }
 
@@ -1809,7 +1825,7 @@ TRANSITION_LIST("s_banco_regs[5][18]")
 	NODE
 	{
 		REPEAT = 1;
-		LEVEL U FOR 3000.0;
+		LEVEL X FOR 3000.0;
 	}
 }
 
@@ -1818,7 +1834,7 @@ TRANSITION_LIST("s_banco_regs[5][17]")
 	NODE
 	{
 		REPEAT = 1;
-		LEVEL U FOR 3000.0;
+		LEVEL X FOR 3000.0;
 	}
 }
 
@@ -1827,7 +1843,7 @@ TRANSITION_LIST("s_banco_regs[5][16]")
 	NODE
 	{
 		REPEAT = 1;
-		LEVEL U FOR 3000.0;
+		LEVEL X FOR 3000.0;
 	}
 }
 
@@ -1836,7 +1852,7 @@ TRANSITION_LIST("s_banco_regs[5][15]")
 	NODE
 	{
 		REPEAT = 1;
-		LEVEL U FOR 3000.0;
+		LEVEL X FOR 3000.0;
 	}
 }
 
@@ -1845,7 +1861,7 @@ TRANSITION_LIST("s_banco_regs[5][14]")
 	NODE
 	{
 		REPEAT = 1;
-		LEVEL U FOR 3000.0;
+		LEVEL X FOR 3000.0;
 	}
 }
 
@@ -1854,7 +1870,7 @@ TRANSITION_LIST("s_banco_regs[5][13]")
 	NODE
 	{
 		REPEAT = 1;
-		LEVEL U FOR 3000.0;
+		LEVEL X FOR 3000.0;
 	}
 }
 
@@ -1863,7 +1879,7 @@ TRANSITION_LIST("s_banco_regs[5][12]")
 	NODE
 	{
 		REPEAT = 1;
-		LEVEL U FOR 3000.0;
+		LEVEL X FOR 3000.0;
 	}
 }
 
@@ -1872,7 +1888,7 @@ TRANSITION_LIST("s_banco_regs[5][11]")
 	NODE
 	{
 		REPEAT = 1;
-		LEVEL U FOR 3000.0;
+		LEVEL X FOR 3000.0;
 	}
 }
 
@@ -1881,7 +1897,7 @@ TRANSITION_LIST("s_banco_regs[5][10]")
 	NODE
 	{
 		REPEAT = 1;
-		LEVEL U FOR 3000.0;
+		LEVEL X FOR 3000.0;
 	}
 }
 
@@ -1890,7 +1906,7 @@ TRANSITION_LIST("s_banco_regs[5][9]")
 	NODE
 	{
 		REPEAT = 1;
-		LEVEL U FOR 3000.0;
+		LEVEL X FOR 3000.0;
 	}
 }
 
@@ -1899,7 +1915,7 @@ TRANSITION_LIST("s_banco_regs[5][8]")
 	NODE
 	{
 		REPEAT = 1;
-		LEVEL U FOR 3000.0;
+		LEVEL X FOR 3000.0;
 	}
 }
 
@@ -1908,7 +1924,7 @@ TRANSITION_LIST("s_banco_regs[5][7]")
 	NODE
 	{
 		REPEAT = 1;
-		LEVEL U FOR 3000.0;
+		LEVEL X FOR 3000.0;
 	}
 }
 
@@ -1917,7 +1933,7 @@ TRANSITION_LIST("s_banco_regs[5][6]")
 	NODE
 	{
 		REPEAT = 1;
-		LEVEL U FOR 3000.0;
+		LEVEL X FOR 3000.0;
 	}
 }
 
@@ -1926,7 +1942,7 @@ TRANSITION_LIST("s_banco_regs[5][5]")
 	NODE
 	{
 		REPEAT = 1;
-		LEVEL U FOR 3000.0;
+		LEVEL X FOR 3000.0;
 	}
 }
 
@@ -1935,7 +1951,7 @@ TRANSITION_LIST("s_banco_regs[5][4]")
 	NODE
 	{
 		REPEAT = 1;
-		LEVEL U FOR 3000.0;
+		LEVEL X FOR 3000.0;
 	}
 }
 
@@ -1944,7 +1960,7 @@ TRANSITION_LIST("s_banco_regs[5][3]")
 	NODE
 	{
 		REPEAT = 1;
-		LEVEL U FOR 3000.0;
+		LEVEL X FOR 3000.0;
 	}
 }
 
@@ -1953,7 +1969,7 @@ TRANSITION_LIST("s_banco_regs[5][2]")
 	NODE
 	{
 		REPEAT = 1;
-		LEVEL U FOR 3000.0;
+		LEVEL X FOR 3000.0;
 	}
 }
 
@@ -1962,7 +1978,7 @@ TRANSITION_LIST("s_banco_regs[5][1]")
 	NODE
 	{
 		REPEAT = 1;
-		LEVEL U FOR 3000.0;
+		LEVEL X FOR 3000.0;
 	}
 }
 
@@ -1971,7 +1987,16 @@ TRANSITION_LIST("s_banco_regs[5][0]")
 	NODE
 	{
 		REPEAT = 1;
-		LEVEL U FOR 3000.0;
+		LEVEL X FOR 3000.0;
+	}
+}
+
+TRANSITION_LIST("pr_state")
+{
+	NODE
+	{
+		REPEAT = 1;
+		LEVEL 0 FOR 3000.0;
 	}
 }
 
@@ -2981,6 +3006,15 @@ DISPLAY_LINE
 	TREE_INDEX = 100;
 	TREE_LEVEL = 1;
 	PARENT = 68;
+}
+
+DISPLAY_LINE
+{
+	CHANNEL = "pr_state";
+	EXPAND_STATUS = COLLAPSED;
+	RADIX = Unsigned;
+	TREE_INDEX = 101;
+	TREE_LEVEL = 0;
 }
 
 TIME_BAR
