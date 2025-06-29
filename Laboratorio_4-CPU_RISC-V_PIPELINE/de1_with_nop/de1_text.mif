@@ -1,0 +1,41 @@
+DEPTH = 16384;
+WIDTH = 32;
+ADDRESS_RADIX = HEX;
+DATA_RADIX = HEX;
+CONTENT
+BEGIN
+00000000 : 0001a283;   % 8:     lw t0, 0(gp)                 # t0 = 0x12345678 %
+00000001 : 00000013;   % 9:     nop                          # HAZARD: Necessário 1 NOP para o caso de lw-use %
+00000002 : 00100293;   % 12:     addi t0, zero, 1             # t0 = 1 %
+00000003 : 00500313;   % 16:     addi t1, zero, 5              %
+00000004 : 006282b3;   % 17:     add t0, t0, t1               # t0 = 6 %
+00000005 : 406282b3;   % 19:     sub t0, t0, t1               # t0 = 1 %
+00000006 : 0f000293;   % 22:     addi t0, zero, 0xF0           %
+00000007 : 00f00313;   % 23:     addi t1, zero, 0x0F %
+00000008 : 0062f2b3;   % 25:     and t0, t0, t1               # t0 = 0x00 %
+00000009 : 0062e2b3;   % 27:     or t0, t0, t1                # t0 = 0x0F %
+0000000a : 00500293;   % 30:     addi t0, zero, 5              %
+0000000b : 00a00313;   % 31:     addi t1, zero, 10 %
+0000000c : 0062a2b3;   % 33:     slt t0, t0, t1               # t0 = 1 %
+0000000d : 05500293;   % 36:     addi t0, zero, 0x55 %
+0000000e : 0051a223;   % 38:     sw t0, 4(gp)                 # MEM[gp+4] = 0x55 %
+0000000f : 0041a283;   % 39:     lw t0, 4(gp)                 # Carrega o valor de volta %
+00000010 : 00000013;   % 40:     nop                          # HAZARD: Necessário 1 NOP para o lw-use (verificação) %
+00000011 : 00a00293;   % 43:     addi t0, zero, 10             %
+00000012 : 00a00313;   % 44:     addi t1, zero, 10 %
+00000013 : 00628663;   % 46:     beq t0, t1, branch_ok %
+00000014 : 00000013;   % 47:     nop                          # Bolha para o HAZARD DE CONTROLE %
+00000015 : 06600293;   % 48:     addi t0, zero, 0x66         # Não deve executar %
+00000016 : 00100293;   % 50:     addi t0, zero, 1 %
+00000017 : 00c0036f;   % 53:     jal t1, jal_test %
+00000018 : 00000013;   % 54:     nop                          # Bolha para o HAZARD DE CONTROLE %
+00000019 : 06600293;   % 55:     addi t0, zero, 0x66         # Não deve executar %
+0000001a : 00200293;   % 57:     addi t0, zero, 2 %
+0000001b : 01430313;   % 60:     addi t1, t1, 0x14 %
+0000001c : 000300e7;   % 62:     jalr ra, t1, 0 %
+0000001d : 00000013;   % 63:     nop                          # Bolha para o HAZARD DE CONTROLE %
+0000001e : 06600293;   % 64:     addi t0, zero, 0x66         # Não deve executar %
+0000001f : 00300293;   % 66:     addi t0, zero, 3 %
+00000020 : 0ff00293;   % 69:     addi t0, zero, 0xFF %
+00000021 : 00100073;   % 70:     ebreak %
+END;
