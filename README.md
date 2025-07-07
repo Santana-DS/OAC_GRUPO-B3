@@ -29,7 +29,7 @@ Todos os componentes foram desenvolvidos e testados utilizando o software Quartu
 3.  **Análise e Síntese:** Execute a análise e síntese do projeto no Quartus para garantir que não há erros de código.
 4.  **Simulação Funcional:**
     * **Teste de1s:** Foi criado um teste de1s para cada implementação. O objetivo deste teste foi avaliar o desempenho e a corretude da execução em um cenário temporal específico.
-    * Utilize a ferramenta de simulação do Quartus (por exemplo, ModelSim integrado ou standalone) para executar a simulação funcional com os testbenches fornecidos, incluindo o teste de1s.
+    * Utilize a ferramenta de simulação do Quartus para executar a simulação funcional com os testbenches fornecidos, incluindo o teste de1s.
     * Analise as waveforms geradas durante a simulação para verificar se o comportamento de cada componente (uniciclo, multiciclo e pipeline) corresponde ao esperado para a arquitetura RISC-V RV32 durante o período de teste.
 5.  **Comparação com o RARS:** O mesmo teste de1s criado para o Quartus também foi executado em nosso simulador **RARS (RISC-V Assembly and Runtime Simulator)**. Os resultados da execução neste simulador foram cuidadosamente comparados com os resultados obtidos na simulação do Quartus para verificar a consistência e a corretude das implementações em diferentes ambientes de simulação. Esta comparação é detalhada nos relatórios.
 
