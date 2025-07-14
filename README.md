@@ -17,7 +17,6 @@ Este repositório contém os arquivos desenvolvidos para os laboratórios da dis
 * `uniciclo/`: Contém os arquivos VHDL para a implementação do uniciclo.
 * `multiciclo/`: Contém os arquivos VHDL para a implementação do multiciclo.
 * `pipeline/`: Contém os arquivos VHDL para a implementação do pipeline.
-* `relatorios/`: Contém os relatórios dos laboratórios, incluindo detalhes sobre o processo de implementação e testes no Quartus e a comparação com o RARS.
 * `README.md`: Este arquivo com a descrição do projeto.
 
 ## Como Executar os Projetos e Testes no Quartus
